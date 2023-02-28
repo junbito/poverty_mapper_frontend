@@ -1,0 +1,7 @@
+.python-version
+.env
+.streamlit/secrets.toml
+.DS_Store
+*__pycache__*
+
+*.ipynb

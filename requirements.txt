@@ -1,0 +1,9 @@
+pandas
+geopandas
+folium
+google-cloud-bigquery
+db-dtypes
+streamlit
+streamlit_folium
+geographiclib
+shapely
