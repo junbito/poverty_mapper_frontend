@@ -6,8 +6,11 @@ df = pd.read_csv('https://raw.githubusercontent.com/giswqs/leafmap/master/exampl
 
 import plotly.express as px
 
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", zoom=3)
+# fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", zoom=3)
+fig = px.scatter_mapbox(df, lat="latitude", lon="longitude",
+hover_name='pop_max', zoom=3)
 
 fig.update_layout(mapbox_style="open-street-map")
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
 st.plotly_chart(fig)
