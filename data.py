@@ -5,8 +5,8 @@ import streamlit as st
 from google.oauth2 import service_account
 
 # Perform query.
-# Uses st.cache_data to only rerun when the query changes or after 10 min.
-@st.cache_data(ttl=600)
+# Uses st.cache_data to only rerun when the query changes.
+@st.cache_data()
 def get_data_with_cache(gcp_project:str,
                         query:str,
                         cache_path:Path,
