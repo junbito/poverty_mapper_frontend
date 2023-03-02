@@ -1,3 +1,9 @@
+pandas
+geopandas
+folium
+google.cloud
+db-dtypes
 streamlit
-earthengine-api
-geemap
+streamlit_folium
+geographiclib
+shapely
