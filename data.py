@@ -27,11 +27,7 @@ def get_data_with_cache(gcp_project:str,
         )
         client = bigquery.Client(credentials=credentials)
 
-        print(f"✅ Credentials is not null ({bool(credentials)})")
-
-
         # Load data from Querying Big Query server
-        # client = bigquery.Client(project=gcp_project)
         query_job = client.query(query)
         result = query_job.result()
         df = result.to_dataframe()

@@ -25,8 +25,6 @@ def main():
 
     st.title('Poverty Mapper')
 
-    # df = pd.read_csv('dhs_clusters.csv')
-
     query = f"""
         SELECT {",".join(COLUMN_NAMES_RAW)}
         FROM {GCP_PROJECT}.{BQ_DATASET}.DHS_CLUSTERS
