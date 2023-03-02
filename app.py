@@ -11,15 +11,14 @@ import statistics as stats
 from params import *
 from data import get_data_with_cache
 
-def style_fn(feature):
-    cm = folium.LinearColormap(["mistyrose", "tomato", "red"])
-    ss = {
-        "fillColor": cm(feature["properties"]["wealthpooled"]),
-        "fillOpacity": 0.8,
-        "weight": 0.8,
-        "color": cm(feature["properties"]["wealthpooled"]),
-    }
-    return ss
+# def style_fn(feature):
+#     ss = {
+#         "fillColor": cm(feature["properties"]["wealthpooled"]),
+#         "fillOpacity": 0.8,
+#         "weight": 0.8,
+#         "color": cm(feature["properties"]["wealthpooled"]),
+#     }
+#     return ss
 
 def main():
     # Config for website
@@ -62,12 +61,26 @@ def main():
                                                     [x.lat_min, x.lat_min, x.lat_max, x.lat_max])), axis=1)
 
     gdf = gpd.GeoDataFrame(df)
-    m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=3, tiles= "Stamen Terrain")
+    m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=3)
+
+    #Add the colormap as a legend
+    cm = folium.LinearColormap(["purple", "white", "orange"], caption="Wealthpooled",
+                               vmin=min(gdf['wealthpooled']), vmax=max(gdf['wealthpooled']))
+
+    style_function = lambda feature: {
+        "fillColor": cm(feature["properties"]["wealthpooled"]),
+        "fillOpacity": 0.8,
+        "weight": 0.8,
+        "color": cm(feature["properties"]["wealthpooled"]),
+    }
+
+    cm.add_to(m)
 
     folium.GeoJson(
         gdf.__geo_interface__,
-        style_function=style_fn,
-        tooltip=folium.features.GeoJsonTooltip(["wealthpooled"]),
+        # style_function=style_fn,
+        style_function=style_function,
+        tooltip=folium.features.GeoJsonTooltip(["wealthpooled"])
     ).add_to(m)
 
     st_data = folium_static(m, width = 900)
