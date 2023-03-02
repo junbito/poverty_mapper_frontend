@@ -1,3 +1,4 @@
 .python-version
 .env
 dev_data/
+.streamlit/secrets.toml
