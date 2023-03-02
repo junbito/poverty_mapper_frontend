@@ -4,12 +4,6 @@ from pathlib import Path
 import streamlit as st
 from google.oauth2 import service_account
 
-# Create API client.
-credentials = service_account.Credentials.from_service_account_info(
-    st.secrets["gcp_service_account"]
-)
-client = bigquery.Client(credentials=credentials)
-
 # Perform query.
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
 @st.cache_data(ttl=600)
@@ -21,13 +15,23 @@ def get_data_with_cache(gcp_project:str,
     Retrieve `query` data from Big Query, or from `cache_path` if file exists.
     Store at `cache_path` if retrieved from Big Query for future re-use.
     """
+
     if cache_path.is_file():
         # Load data from local CSV
         df = pd.read_csv(cache_path, header='infer' if data_has_header else None)
 
     else:
+        # Create API client.
+        credentials = service_account.Credentials.from_service_account_info(
+            st.secrets["gcp_service_account"]
+        )
+        client = bigquery.Client(credentials=credentials)
+
+        print(f"✅ Credentials is not null ({bool(credentials)})")
+
+
         # Load data from Querying Big Query server
-        client = bigquery.Client(project=gcp_project)
+        # client = bigquery.Client(project=gcp_project)
         query_job = client.query(query)
         result = query_job.result()
         df = result.to_dataframe()
