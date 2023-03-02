@@ -6,9 +6,20 @@ from streamlit_folium import folium_static, st_folium
 from geographiclib.geodesic import Geodesic
 from shapely.geometry import Polygon
 from pathlib import Path
+import statistics as stats
 
 from params import *
 from data import get_data_with_cache
+
+def style_fn(feature):
+    cm = folium.LinearColormap(["mistyrose", "tomato", "red"])
+    ss = {
+        "fillColor": cm(feature["properties"]["wealthpooled"]),
+        "fillOpacity": 0.8,
+        "weight": 0.8,
+        "color": cm(feature["properties"]["wealthpooled"]),
+    }
+    return ss
 
 def main():
     # Config for website
@@ -50,16 +61,14 @@ def main():
     df['geometry'] = df.apply(lambda x: Polygon(zip([x.lon_min, x.lon_max, x.lon_max, x.lon_min],
                                                     [x.lat_min, x.lat_min, x.lat_max, x.lat_max])), axis=1)
 
-    m = folium.Map(location=[df.lat.mean(), df.lon.mean()], zoom_start=3, tiles= "Stamen Terrain")
+    gdf = gpd.GeoDataFrame(df)
+    m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=3, tiles= "Stamen Terrain")
 
-    for _, r in df.iterrows():
-        sim_geo = gpd.GeoSeries(r['geometry']).simplify(tolerance=0.001)
-        geo_j = sim_geo.to_json()
-        geo_j = folium.GeoJson(data=geo_j,
-                            style_function=lambda x: {'fillColor': 'orange'})
-        iframe = folium.IFrame(str(r["country"]).capitalize() + ' ' + str(r["wealthpooled"]))
-        popup = folium.Popup(iframe, min_width=300, max_width=300, max_height=100).add_to(geo_j)
-        geo_j.add_to(m)
+    folium.GeoJson(
+        gdf.__geo_interface__,
+        style_function=style_fn,
+        tooltip=folium.features.GeoJsonTooltip(["wealthpooled"]),
+    ).add_to(m)
 
     st_data = folium_static(m, width = 900)
     # st_data = st_folium(m, width = 1500)
