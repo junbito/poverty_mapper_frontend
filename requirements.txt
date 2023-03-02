@@ -1,7 +1,7 @@
 pandas
 geopandas
 folium
-google.cloud
+google-cloud-bigquery
 db-dtypes
 streamlit
 streamlit_folium
