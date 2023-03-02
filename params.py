@@ -1,8 +1,10 @@
 import os
 
 ##################  VARIABLES  ##################
-GCP_PROJECT = os.environ.get("GCP_PROJECT")
-BQ_DATASET = os.environ.get("BQ_DATASET")
+# GCP_PROJECT = os.environ.get("GCP_PROJECT")
+# BQ_DATASET = os.environ.get("BQ_DATASET")
+GCP_PROJECT = "poverty-mapper-379103"
+BQ_DATASET = "poverty_mapper"
 
 ##################  CONSTANTS  #####################
 LOCAL_DATA_PATH = "dev_data"
