@@ -78,7 +78,7 @@ def main():
         folium.GeoJson(
             gdf.__geo_interface__,
             style_function=style_function,
-            tooltip=folium.features.GeoJsonTooltip(["wealthpooled"])
+            tooltip=folium.features.GeoJsonTooltip(["country", "year", "wealthpooled"])
         ).add_to(m)
 
         st_data = folium_static(m, width = 900)
@@ -122,7 +122,7 @@ def main():
         folium.GeoJson(
             test_gdf.__geo_interface__,
             style_function=style_function,
-            tooltip=folium.features.GeoJsonTooltip(["wealthpooled"])
+            tooltip=folium.features.GeoJsonTooltip(["country", "year", "wealthpooled"])
         ).add_to(test_m)
 
         st_data = folium_static(test_m, width = 900)
@@ -165,7 +165,7 @@ def main():
         folium.GeoJson(
             car_gdf.__geo_interface__,
             style_function=style_function,
-            tooltip=folium.features.GeoJsonTooltip(["wealthpooled"])
+            tooltip=folium.features.GeoJsonTooltip(["country", "year", "wealthpooled"])
         ).add_to(car_m)
 
         st_data = folium_static(car_m, width = 900)
