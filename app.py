@@ -51,7 +51,7 @@ def main():
     # m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=3)
     m = folium.Map(location=[3, 20], zoom_start=3)
 
-    cm = folium.LinearColormap(["purple", "white", "orange"], caption="Wealthpooled",
+    cm = folium.LinearColormap(["purple", "green", "orange"], caption="Wealthpooled",
                             vmin=min(gdf['wealthpooled']), vmax=max(gdf['wealthpooled']))
 
     style_function = lambda feature: {
@@ -94,7 +94,7 @@ def main():
     # test_m = folium.Map(location=[test_gdf.lat.mean(), test_gdf.lon.mean()], zoom_start=3)
     test_m = folium.Map(location=[3, 20], zoom_start=3)
 
-    test_cm = folium.LinearColormap(["purple", "white", "orange"], caption="Wealthpooled",
+    test_cm = folium.LinearColormap(["purple", "green", "orange"], caption="Wealthpooled",
                             vmin=min(test_gdf['wealthpooled']), vmax=max(test_gdf['wealthpooled']))
 
     style_function = lambda feature: {
@@ -137,7 +137,7 @@ def main():
     # car_m = folium.Map(location=[car_gdf.lat.mean(), car_gdf.lon.mean()], zoom_start=3)
     car_m = folium.Map(location=[3, 20], zoom_start=3)
 
-    car_cm = folium.LinearColormap(["purple", "white", "orange"], caption="Wealthpooled",
+    car_cm = folium.LinearColormap(["purple", "green", "orange"], caption="Wealthpooled",
                             vmin=min(car_gdf['wealthpooled']), vmax=max(car_gdf['wealthpooled']))
 
     style_function = lambda feature: {
