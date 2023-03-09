@@ -40,16 +40,16 @@ def main():
     # df = df[df['GID_1'] == 'AGO.1']
     # st.map(df)
 
-    df['lat_max'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 0, tile_size/2)['lat2'], axis=1)
-    df['lon_max'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 90, tile_size/2)['lon2'], axis=1)
-    df['lat_min'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 180, tile_size/2)['lat2'], axis=1)
-    df['lon_min'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 270, tile_size/2)['lon2'], axis=1)
+    df['lat_max'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 0, tile_size*5/2)['lat2'], axis=1)
+    df['lon_max'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 90, tile_size*5/2)['lon2'], axis=1)
+    df['lat_min'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 180, tile_size*5/2)['lat2'], axis=1)
+    df['lon_min'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 270, tile_size*5/2)['lon2'], axis=1)
     df['geometry'] = df.apply(lambda x: Polygon(zip([x.lon_min, x.lon_max, x.lon_max, x.lon_min],
                                                     [x.lat_min, x.lat_min, x.lat_max, x.lat_max])), axis=1)
 
     gdf = gpd.GeoDataFrame(df)
-    # m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=3)
-    m = folium.Map(location=[3, 20], zoom_start=3)
+    m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=4)
+    # m = folium.Map(location=[3, 20], zoom_start=3.1)
 
     cm = folium.LinearColormap(["purple", "green", "orange"], caption="Wealthpooled",
                             vmin=min(gdf['wealthpooled']), vmax=max(gdf['wealthpooled']))
@@ -70,6 +70,8 @@ def main():
         tooltip=folium.features.GeoJsonTooltip(["country", "year", "wealthpooled"])
     ).add_to(m)
 
+    folium.TileLayer('cartodbpositron').add_to(m)
+
     ##############
     # TAB 2
     ##############
@@ -83,16 +85,16 @@ def main():
                             cache_path=test_df_cache_path,
                             data_has_header=True)
 
-    test_df['lat_max'] = test_df.apply(lambda x: geod.Direct(x.lat, x.lon, 0, tile_size/2)['lat2'], axis=1)
-    test_df['lon_max'] = test_df.apply(lambda x: geod.Direct(x.lat, x.lon, 90, tile_size/2)['lon2'], axis=1)
-    test_df['lat_min'] = test_df.apply(lambda x: geod.Direct(x.lat, x.lon, 180, tile_size/2)['lat2'], axis=1)
-    test_df['lon_min'] = test_df.apply(lambda x: geod.Direct(x.lat, x.lon, 270, tile_size/2)['lon2'], axis=1)
+    test_df['lat_max'] = test_df.apply(lambda x: geod.Direct(x.lat, x.lon, 0, tile_size*5/2)['lat2'], axis=1)
+    test_df['lon_max'] = test_df.apply(lambda x: geod.Direct(x.lat, x.lon, 90, tile_size*5/2)['lon2'], axis=1)
+    test_df['lat_min'] = test_df.apply(lambda x: geod.Direct(x.lat, x.lon, 180, tile_size*5/2)['lat2'], axis=1)
+    test_df['lon_min'] = test_df.apply(lambda x: geod.Direct(x.lat, x.lon, 270, tile_size*5/2)['lon2'], axis=1)
     test_df['geometry'] = test_df.apply(lambda x: Polygon(zip([x.lon_min, x.lon_max, x.lon_max, x.lon_min],
                                                     [x.lat_min, x.lat_min, x.lat_max, x.lat_max])), axis=1)
 
     test_gdf = gpd.GeoDataFrame(test_df)
-    # test_m = folium.Map(location=[test_gdf.lat.mean(), test_gdf.lon.mean()], zoom_start=3)
-    test_m = folium.Map(location=[3, 20], zoom_start=3)
+    test_m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=4)
+    # test_m = folium.Map(location=[3, 20], zoom_start=3.1)
 
     test_cm = folium.LinearColormap(["purple", "green", "orange"], caption="Wealthpooled",
                             vmin=min(test_gdf['wealthpooled']), vmax=max(test_gdf['wealthpooled']))
@@ -112,6 +114,8 @@ def main():
         style_function=style_function,
         tooltip=folium.features.GeoJsonTooltip(["country", "year", "wealthpooled"])
     ).add_to(test_m)
+
+    folium.TileLayer('cartodbpositron').add_to(test_m)
 
     ##############
     # TAB 3
@@ -134,8 +138,8 @@ def main():
                                                     [x.lat_min, x.lat_min, x.lat_max, x.lat_max])), axis=1)
 
     car_gdf = gpd.GeoDataFrame(car_df)
-    # car_m = folium.Map(location=[car_gdf.lat.mean(), car_gdf.lon.mean()], zoom_start=3)
-    car_m = folium.Map(location=[3, 20], zoom_start=3)
+    car_m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=4)
+    # car_m = folium.Map(location=[3, 20], zoom_start=5)
 
     car_cm = folium.LinearColormap(["purple", "green", "orange"], caption="Wealthpooled",
                             vmin=min(car_gdf['wealthpooled']), vmax=max(car_gdf['wealthpooled']))
@@ -144,7 +148,7 @@ def main():
         "fillColor": car_cm(feature["properties"]["wealthpooled"]),
         "fillOpacity": 0.8,
         "weight": 0.8,
-        "color": car_cm(feature["properties"]["wealthpooled"]),
+        "color": car_cm(feature["properties"]["wealthpooled"])
     }
 
     #Add the colormap as a legend
@@ -156,9 +160,15 @@ def main():
         tooltip=folium.features.GeoJsonTooltip(["country", "year", "wealthpooled"])
     ).add_to(car_m)
 
+    folium.TileLayer('cartodbpositron').add_to(car_m)
+
     with st.sidebar:
         st.header('DHS Survey')
-        stats_df = df.groupby(['country'])[['wealthpooled']].mean().sort_values(by='wealthpooled', ascending=False)
+        stats_df = df.groupby(['country'])[['wealthpooled']].mean().sort_values(by='wealthpooled', ascending=False).reset_index()
+        stats_df['country'] = stats_df['country'].str.replace('_', ' ')
+        stats_df['country'] = stats_df['country'].str.title()
+        stats_df.rename(columns={"wealthpooled": "Relative wealth"}, inplace=True)
+        stats_df.set_index('country', inplace=True)
         st.table(data=stats_df)
         # st.header('Select region')
         # country = st.selectbox(label = 'Country', label_visibility='collapsed',options=('France', 'Italy', 'USA','New Zealand'))
