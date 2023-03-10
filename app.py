@@ -130,10 +130,10 @@ def main():
                             cache_path=car_df_cache_path,
                             data_has_header=True)
 
-    car_df['lat_max'] = car_df.apply(lambda x: geod.Direct(x.lat, x.lon, 0, tile_size*10/2)['lat2'], axis=1)
-    car_df['lon_max'] = car_df.apply(lambda x: geod.Direct(x.lat, x.lon, 90, tile_size*10/2)['lon2'], axis=1)
-    car_df['lat_min'] = car_df.apply(lambda x: geod.Direct(x.lat, x.lon, 180, tile_size*10/2)['lat2'], axis=1)
-    car_df['lon_min'] = car_df.apply(lambda x: geod.Direct(x.lat, x.lon, 270, tile_size*10/2)['lon2'], axis=1)
+    car_df['lat_max'] = car_df.apply(lambda x: geod.Direct(x.lat, x.lon, 0, tile_size*5/2)['lat2'], axis=1)
+    car_df['lon_max'] = car_df.apply(lambda x: geod.Direct(x.lat, x.lon, 90, tile_size*5/2)['lon2'], axis=1)
+    car_df['lat_min'] = car_df.apply(lambda x: geod.Direct(x.lat, x.lon, 180, tile_size*5/2)['lat2'], axis=1)
+    car_df['lon_min'] = car_df.apply(lambda x: geod.Direct(x.lat, x.lon, 270, tile_size*5/2)['lon2'], axis=1)
     car_df['geometry'] = car_df.apply(lambda x: Polygon(zip([x.lon_min, x.lon_max, x.lon_max, x.lon_min],
                                                     [x.lat_min, x.lat_min, x.lat_max, x.lat_max])), axis=1)
 
