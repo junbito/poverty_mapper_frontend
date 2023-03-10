@@ -177,7 +177,7 @@ def main():
 
     st.title('Poverty Mapper')
 
-    tab1, tab2, tab3 = st.tabs(["TARGET", "TEST", "PREDICTIONS"])
+    tab1, tab2, tab3 = st.tabs(["SURVEY DATASET", "TEST", "PREDICTIONS"])
 
     with tab1:
 
