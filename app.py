@@ -113,7 +113,7 @@ def main():
     # TAB 3
     ##############
     query = f"""
-        SELECT {",".join(['country', 'year', 'city', 'lat', 'lon', 'wealthpooled'])}
+        SELECT {",".join(COLUMN_NAMES_RAW)}
         FROM {GCP_PROJECT}.{BQ_DATASET}.CAR_PRED
         """
     car_df_cache_path = Path(LOCAL_DATA_PATH).joinpath("CAR_PRED.csv")

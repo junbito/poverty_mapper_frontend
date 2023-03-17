@@ -6,4 +6,4 @@ BQ_DATASET = os.environ.get("BQ_DATASET")
 
 ##################  CONSTANTS  #####################
 LOCAL_DATA_PATH = "dev_data"
-COLUMN_NAMES_RAW = ['country', 'year', 'lat', 'lon', 'GID_1', 'GID_2', 'wealthpooled', 'households', 'urban_rural']
+COLUMN_NAMES_RAW = ['country', 'year', 'city', 'lat', 'lon', 'wealthpooled']
