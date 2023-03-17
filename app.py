@@ -153,15 +153,6 @@ def main():
 
     folium.TileLayer('cartodbpositron').add_to(car_m)
 
-    with st.sidebar:
-        st.header('DHS Survey')
-        stats_df = df.groupby(['country'])[['wealthpooled']].mean().sort_values(by='wealthpooled', ascending=False).reset_index()
-        stats_df['country'] = stats_df['country'].str.replace('_', ' ')
-        stats_df['country'] = stats_df['country'].str.title()
-        stats_df.rename(columns={"wealthpooled": "Relative wealth"}, inplace=True)
-        stats_df.set_index('country', inplace=True)
-        st.table(data=stats_df)
-
     st.title('Poverty Mapper')
 
     tab1, tab2, tab3 = st.tabs(["SURVEY DATASET", "TEST", "PREDICTIONS"])
