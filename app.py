@@ -34,12 +34,6 @@ def main():
     geod = Geodesic.WGS84
     tile_size = 6720 #in meters
 
-    # FOR TESTING
-    # df = df[df['year'] == 2015]
-    # df = df[df['country'] == 'angola']
-    # df = df[df['GID_1'] == 'AGO.1']
-    # st.map(df)
-
     df['lat_max'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 0, tile_size*5/2)['lat2'], axis=1)
     df['lon_max'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 90, tile_size*5/2)['lon2'], axis=1)
     df['lat_min'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 180, tile_size*5/2)['lat2'], axis=1)
@@ -49,7 +43,6 @@ def main():
 
     gdf = gpd.GeoDataFrame(df)
     m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=4)
-    # m = folium.Map(location=[3, 20], zoom_start=3.1)
 
     cm = folium.LinearColormap(["purple", "green", "orange"], caption="Wealthpooled",
                             vmin=min(gdf['wealthpooled']), vmax=max(gdf['wealthpooled']))
@@ -94,7 +87,6 @@ def main():
 
     test_gdf = gpd.GeoDataFrame(test_df)
     test_m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=4)
-    # test_m = folium.Map(location=[3, 20], zoom_start=3.1)
 
     test_cm = folium.LinearColormap(["purple", "green", "orange"], caption="Wealthpooled",
                             vmin=min(test_gdf['wealthpooled']), vmax=max(test_gdf['wealthpooled']))
@@ -139,7 +131,6 @@ def main():
 
     car_gdf = gpd.GeoDataFrame(car_df)
     car_m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=4)
-    # car_m = folium.Map(location=[3, 20], zoom_start=5)
 
     car_cm = folium.LinearColormap(["purple", "green", "orange"], caption="Wealthpooled",
                             vmin=min(car_gdf['wealthpooled']), vmax=max(car_gdf['wealthpooled']))
@@ -170,10 +161,6 @@ def main():
         stats_df.rename(columns={"wealthpooled": "Relative wealth"}, inplace=True)
         stats_df.set_index('country', inplace=True)
         st.table(data=stats_df)
-        # st.header('Select region')
-        # country = st.selectbox(label = 'Country', label_visibility='collapsed',options=('France', 'Italy', 'USA','New Zealand'))
-        # region = st.radio(label='Region', options=('REG01', 'REG02', 'REG03', 'REG04', 'REG05', 'REG06', 'REG07'))
-
 
     st.title('Poverty Mapper')
 
@@ -182,7 +169,6 @@ def main():
     with tab1:
 
         st_data = folium_static(m, width = 900)
-        # st_data = st_folium(m, width = 1500)
 
     with tab2:
 
