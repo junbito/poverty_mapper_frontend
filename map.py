@@ -5,17 +5,24 @@ import folium
 def get_map(gdf:gpd.GeoDataFrame,
             lat=None,
             lon=None,
-            zoom_start=4) -> folium.Map:
+            zoom_start=4,
+            cmap_min=None,
+            cmap_max=None) -> folium.Map:
 
     if not lat:
         lat = gdf.lat.mean()
     if not lon:
         lon = gdf.lon.mean()
+    if not cmap_min:
+        cmap_min = min(gdf['wealthpooled'])
+    if not cmap_max:
+        cmap_max = max(gdf['wealthpooled'])
 
     map = folium.Map(location=[lat, lon], zoom_start=zoom_start)
 
-    color_map = folium.LinearColormap(["purple", "green", "orange"], caption="Wealthpooled",
-                            vmin=min(gdf['wealthpooled']), vmax=max(gdf['wealthpooled']))
+    color_map = folium.LinearColormap(["purple", "green", "orange"],
+                                      caption="Wealthpooled",
+                                      vmin=cmap_min, vmax=cmap_max)
 
     style_function = lambda feature: {
         "fillColor": color_map(feature["properties"]["wealthpooled"]),

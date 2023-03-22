@@ -24,12 +24,20 @@ def main():
 
     with tab2:
         test_gdf = get_data_with_cache(table_name='DHS_OOC_A_TEST')
-        test_map = get_map(gdf=test_gdf, lat=target_gdf.lat.mean(), lon=target_gdf.lon.mean())
+        test_map = get_map(gdf=test_gdf,
+                           lat=target_gdf.lat.mean(),
+                           lon=target_gdf.lon.mean(),
+                           cmap_min=min(target_gdf['wealthpooled']),
+                           cmap_max=max(target_gdf['wealthpooled']))
         st_data = folium_static(test_map, width = 900)
 
     with tab3:
         prediction_gdf = get_data_with_cache(table_name='CAR_PRED')
-        prediction_map = get_map(gdf=prediction_gdf, lat=target_gdf.lat.mean(), lon=target_gdf.lon.mean())
+        prediction_map = get_map(gdf=prediction_gdf,
+                                 lat=target_gdf.lat.mean(),
+                                 lon=target_gdf.lon.mean(),
+                                 cmap_min=min(target_gdf['wealthpooled']),
+                                 cmap_max=max(target_gdf['wealthpooled']))
         st_data = folium_static(prediction_map, width = 900)
 
 
