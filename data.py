@@ -1,8 +1,12 @@
 import pandas as pd
+import geopandas as gpd
 from google.cloud import bigquery
 from pathlib import Path
 import streamlit as st
 from google.oauth2 import service_account
+from geographiclib.geodesic import Geodesic
+from shapely.geometry import Polygon
+
 
 # Perform query.
 # Uses st.cache_data to only rerun when the query changes.
@@ -38,4 +42,14 @@ def get_data_with_cache(gcp_project:str,
 
     print(f"✅ Data loaded, with shape {df.shape}")
 
-    return df
+    geod = Geodesic.WGS84
+    tile_size = 6720 #in meters
+
+    df['lat_max'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 0, tile_size*5/2)['lat2'], axis=1)
+    df['lon_max'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 90, tile_size*5/2)['lon2'], axis=1)
+    df['lat_min'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 180, tile_size*5/2)['lat2'], axis=1)
+    df['lon_min'] = df.apply(lambda x: geod.Direct(x.lat, x.lon, 270, tile_size*5/2)['lon2'], axis=1)
+    df['geometry'] = df.apply(lambda x: Polygon(zip([x.lon_min, x.lon_max, x.lon_max, x.lon_min],
+                                                    [x.lat_min, x.lat_min, x.lat_max, x.lat_max])), axis=1)
+
+    return gpd.GeoDataFrame(df)
