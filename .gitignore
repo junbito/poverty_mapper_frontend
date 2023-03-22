@@ -1,7 +1,5 @@
 .python-version
 .env
-dev_data/*
-!dev_data/.gitkeep
 .streamlit/secrets.toml
 
 *.ipynb
