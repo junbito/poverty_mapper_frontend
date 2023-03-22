@@ -1,11 +1,6 @@
-import pandas as pd
-import geopandas as gpd
 import folium
 import streamlit as st
-from streamlit_folium import folium_static, st_folium
-from geographiclib.geodesic import Geodesic
-from shapely.geometry import Polygon
-from pathlib import Path
+from streamlit_folium import folium_static
 
 from params import *
 from data import get_data_with_cache
@@ -50,7 +45,6 @@ def main():
     # TAB 2
     ##############
     test_gdf = get_data_with_cache(table_name='DHS_OOC_A_TEST')
-
 
     test_m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=4)
 
