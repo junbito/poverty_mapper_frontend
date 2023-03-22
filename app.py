@@ -21,16 +21,7 @@ def main():
     ##############
     # TAB 1
     ##############
-    query = f"""
-        SELECT {",".join(COLUMN_NAMES_RAW)}
-        FROM {GCP_PROJECT}.{BQ_DATASET}.DHS_CLUSTERS
-        """
-    df_cache_path = Path(LOCAL_DATA_PATH).joinpath("DHS_CLUSTERS.csv")
-
-    gdf = get_data_with_cache(query=query,
-                            gcp_project=GCP_PROJECT,
-                            cache_path=df_cache_path,
-                            data_has_header=True)
+    gdf = get_data_with_cache(table_name='DHS_CLUSTERS')
 
     m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=4)
 
@@ -58,16 +49,8 @@ def main():
     ##############
     # TAB 2
     ##############
-    query = f"""
-        SELECT {",".join(COLUMN_NAMES_RAW)}
-        FROM {GCP_PROJECT}.{BQ_DATASET}.DHS_OOC_A_TEST
-        """
-    test_df_cache_path = Path(LOCAL_DATA_PATH).joinpath("DHS_OOC_A_TEST.csv")
+    test_gdf = get_data_with_cache(table_name='DHS_OOC_A_TEST')
 
-    test_gdf = get_data_with_cache(query=query,
-                            gcp_project=GCP_PROJECT,
-                            cache_path=test_df_cache_path,
-                            data_has_header=True)
 
     test_m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=4)
 
@@ -95,16 +78,7 @@ def main():
     ##############
     # TAB 3
     ##############
-    query = f"""
-        SELECT {",".join(COLUMN_NAMES_RAW)}
-        FROM {GCP_PROJECT}.{BQ_DATASET}.CAR_PRED
-        """
-    car_df_cache_path = Path(LOCAL_DATA_PATH).joinpath("CAR_PRED.csv")
-
-    car_gdf = get_data_with_cache(query=query,
-                            gcp_project=GCP_PROJECT,
-                            cache_path=car_df_cache_path,
-                            data_has_header=True)
+    car_gdf = get_data_with_cache(table_name='CAR_PRED')
 
     car_m = folium.Map(location=[gdf.lat.mean(), gdf.lon.mean()], zoom_start=4)
 

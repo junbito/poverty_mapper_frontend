@@ -7,18 +7,24 @@ from google.oauth2 import service_account
 from geographiclib.geodesic import Geodesic
 from shapely.geometry import Polygon
 
+from params import *
+
 
 # Perform query.
 # Uses st.cache_data to only rerun when the query changes.
 @st.cache_data()
-def get_data_with_cache(gcp_project:str,
-                        query:str,
-                        cache_path:Path,
+def get_data_with_cache(table_name:str,
                         data_has_header=True) -> pd.DataFrame:
     """
     Retrieve `query` data from Big Query, or from `cache_path` if file exists.
     Store at `cache_path` if retrieved from Big Query for future re-use.
     """
+
+    query = f"""
+        SELECT {",".join(COLUMN_NAMES_RAW)}
+        FROM {GCP_PROJECT}.{BQ_DATASET}.{table_name}
+        """
+    cache_path = Path(LOCAL_DATA_PATH).joinpath(f"{table_name}.csv")
 
     if cache_path.is_file():
         # Load data from local CSV
